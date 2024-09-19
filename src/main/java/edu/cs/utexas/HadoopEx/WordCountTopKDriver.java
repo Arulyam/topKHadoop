@@ -49,6 +49,7 @@ public class WordCountTopKDriver extends Configured implements Tool {
 			job.setOutputKeyClass(Text.class);
 			job.setOutputValueClass(IntWritable.class);
 
+			// hadoop understands the .bz2 file
 			// specify input and output directories
 			FileInputFormat.addInputPath(job, new Path(args[0]));
 			job.setInputFormatClass(TextInputFormat.class);

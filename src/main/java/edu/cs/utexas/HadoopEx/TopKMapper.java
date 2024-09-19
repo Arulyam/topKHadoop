@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 public class TopKMapper extends Mapper<Text, Text, Text, IntWritable> {
 
 	private Logger logger = Logger.getLogger(TopKMapper.class);
-
+	private static int K = 3;
 
 	private PriorityQueue<WordAndCount> pq;
 
@@ -37,7 +37,7 @@ public class TopKMapper extends Mapper<Text, Text, Text, IntWritable> {
 
 		pq.add(new WordAndCount(new Text(key), new IntWritable(count)) );
 
-		if (pq.size() > 10) {
+		if (pq.size() > K) {
 			pq.poll();
 		}
 	}

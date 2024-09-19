@@ -22,5 +22,12 @@ public class WordCountMapper extends Mapper<Object, Text, Text, IntWritable> {
 			word.set(itr.nextToken());
 			context.write(word, counter);
 		}
+
+		String[] records = value.toString().split("\\R");
+		for(int i = 0; i < records.length; ++i) {
+			String[] vals = records[i].split(",");
+			word.set(vals[7]);
+			context.write(word, counter);
+		}
 	}
 }
