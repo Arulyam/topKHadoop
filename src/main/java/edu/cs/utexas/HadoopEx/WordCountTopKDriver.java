@@ -5,8 +5,10 @@ import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.join.TupleWritable;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -47,7 +49,7 @@ public class WordCountTopKDriver extends Configured implements Tool {
 
 			// specify output types
 			job.setOutputKeyClass(Text.class);
-			job.setOutputValueClass(IntWritable.class);
+			job.setOutputValueClass(TupWritable.class);
 
 			// hadoop understands the .bz2 file
 			// specify input and output directories
@@ -72,7 +74,7 @@ public class WordCountTopKDriver extends Configured implements Tool {
 
 			// specify output types
 			job2.setOutputKeyClass(Text.class);
-			job2.setOutputValueClass(IntWritable.class);
+			job2.setOutputValueClass(FloatWritable.class);
 
 			// set the number of reducer to 1
 			job2.setNumReduceTasks(1);

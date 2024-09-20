@@ -1,5 +1,6 @@
 package edu.cs.utexas.HadoopEx;
 
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -15,7 +16,7 @@ import java.util.Iterator;
 
 
 
-public class TopKReducer extends  Reducer<Text, IntWritable, Text, IntWritable> {
+public class TopKReducer extends  Reducer<Text, FloatWritable, Text, FloatWritable> {
 
     private static int K = 3;
     private PriorityQueue<WordAndCount> pq = new PriorityQueue<WordAndCount>(K);
@@ -38,7 +39,7 @@ public class TopKReducer extends  Reducer<Text, IntWritable, Text, IntWritable> 
      * @throws IOException
      * @throws InterruptedException
      */
-   public void reduce(Text key, Iterable<IntWritable> values, Context context)
+   public void reduce(Text key, Iterable<FloatWritable> ratios, Context context)
            throws IOException, InterruptedException {
 
 
@@ -47,14 +48,14 @@ public class TopKReducer extends  Reducer<Text, IntWritable, Text, IntWritable> 
 
 
        // size of values is 1 because key only has one distinct value
-       for (IntWritable value : values) {
+       for (FloatWritable ratio : ratios) {
            counter = counter + 1;
            logger.info("Reducer Text: counter is " + counter);
-           logger.info("Reducer Text: Add this item  " + new WordAndCount(key, value).toString());
+           logger.info("Reducer Text: Add this item  " + new WordAndCount(key, ratio).toString());
 
-           pq.add(new WordAndCount(new Text(key), new IntWritable(value.get()) ) );
+           pq.add(new WordAndCount(new Text(key), new FloatWritable(ratio.get()) ) );
 
-           logger.info("Reducer Text: " + key.toString() + " , Count: " + value.toString());
+           logger.info("Reducer Text: " + key.toString() + " , Count: " + ratio.toString());
            logger.info("PQ Status: " + pq.toString());
        }
 
@@ -86,8 +87,8 @@ public class TopKReducer extends  Reducer<Text, IntWritable, Text, IntWritable> 
 
 
         for (WordAndCount value : values) {
-            context.write(value.getWord(), value.getCount());
-            logger.info("TopKReducer - Top-K Words are:  " + value.getWord() + "  Count:"+ value.getCount());
+            context.write(value.getWord(), value.getDelayRatio());
+            logger.info("TopKReducer - Top-K Words are:  " + value.getWord() + "  Count:"+ value.getDelayRatio());
         }
 
 

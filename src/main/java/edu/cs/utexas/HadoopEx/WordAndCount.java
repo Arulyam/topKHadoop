@@ -1,6 +1,7 @@
 package edu.cs.utexas.HadoopEx;
 
 
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
@@ -8,19 +9,19 @@ import org.apache.hadoop.io.Text;
 public class WordAndCount implements Comparable<WordAndCount> {
 
         private final Text word;
-        private final IntWritable count;
+        private final FloatWritable delayRatio;
 
-        public WordAndCount(Text word, IntWritable count) {
+        public WordAndCount(Text word, FloatWritable delayRatio) {
             this.word = word;
-            this.count = count;
+            this.delayRatio = delayRatio;
         }
 
         public Text getWord() {
             return word;
         }
 
-        public IntWritable getCount() {
-            return count;
+        public FloatWritable getDelayRatio() {
+            return delayRatio;
         }
     /**
      * Compares two sort data objects by their value.
@@ -30,7 +31,7 @@ public class WordAndCount implements Comparable<WordAndCount> {
         @Override
         public int compareTo(WordAndCount other) {
 
-            float diff = count.get() - other.count.get();
+            float diff = delayRatio.get() - other.delayRatio.get();
             if (diff > 0) {
                 return 1;
             } else if (diff < 0) {
@@ -42,7 +43,7 @@ public class WordAndCount implements Comparable<WordAndCount> {
 
         public String toString(){
 
-            return "("+word.toString() +" , "+ count.toString()+")";
+            return "("+word.toString() +" , "+ delayRatio.toString()+")";
         }
     }
 
